@@ -9,53 +9,51 @@ import {
 
 import axios from 'axios'
 
-import ReactMarkdown from 'react-markdown'
-import MarkNav from 'markdown-navbar'
-import 'markdown-navbar/dist/navbar.css'
+import marked from 'marked'
+import highlightjs from 'highlight.js'
+import 'highlight.js/styles/monokai-sublime.css'
+import Tocify from '../components/tocify.tsx'
 
 import Header from '../components/Header'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
 import Footer from '../components/Footer'
 
+import servicePath from '../config'
+
 import '../static/style/pages/detail.css'
 
-const Detail = () => {
-  
-  let markdown='# P01:课程介绍和环境搭建\n' +
-  '[ **M** ] arkdown + E [ **ditor** ] = **Mditor**  \n' +
-  '> Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已... \n\n' +
-   '**这是加粗的文字**\n\n' +
-  '*这是倾斜的文字*`\n\n' +
-  '***这是斜体加粗的文字***\n\n' +
-  '~~这是加删除线的文字~~ \n\n'+
-  '\`console.log(111)\` \n\n'+
-  '# p02:来个Hello World 初始Vue3.0\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n'+
-  '***\n\n\n' +
-  '# p03:Vue3.0基础知识讲解\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '# p04:Vue3.0基础知识讲解\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '#5 p05:Vue3.0基础知识讲解\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '# p06:Vue3.0基础知识讲解\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '# p07:Vue3.0基础知识讲解\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '``` var a=11; ```'
+const Detail = (props) => {
+
+  const tocify = new Tocify() // 文章详情导航栏插件
+  const renderer = new marked.Renderer()
+
+  // ### 文本
+  renderer.heading = (text, level, raw) => {
+    const anchor = tocify.add(text, level)
+    return (
+      `<a id="${anchor}" href="#${anchor}" class="anchor-fix">
+        <h${level}>${text}</h${level}>
+      </a>\n`
+    )
+  }
+
+  marked.setOptions({
+    renderer: renderer, // 可以通过自定义的Renderer渲染出自定义的格式
+    gfm:true, // 启动类似与github样式的markdown
+    pedantic: false, // 只解析符合Markdown定义的，不修正Markdown的错误
+    sanitize: false, // 原始输出，忽略HTML标签
+    tables: true, // 支持github形式的表格，使用时必须打开gfm选项
+    breaks: false, // 支持github换行符，使用时必须打开gfm选项
+    smartLists: true, // 优化列表输出，使你的样式更好看一些
+    smartypants: false,
+    highlight: function (code) { // 代码高亮显示规则
+            return highlightjs.highlightAuto(code).value;
+    }
+  })
+
+  const html = marked(props.article_content) // 将markdown转换为html
+
   return (
     <div>
       <Head>
@@ -84,11 +82,9 @@ const Detail = () => {
               <span><FolderOutlined /> 视频教程</span>
               <span><FireOutlined /> 6578人</span>
             </div>
-            <div className="detailed-content" >
-              <ReactMarkdown 
-                source={markdown} 
-                escapeHtml={false}  // html标签不进行转换
-              />
+            <div className="detailed-content" 
+              dangerouslySetInnerHTML={{__html: html}}
+            >
             </div>
           </div>
           
@@ -99,12 +95,7 @@ const Detail = () => {
           <Affix offsetTop={60}>
             <div className="detailed-nav comm-box">
               <div className="nav-title">文章目录</div>
-              <MarkNav
-                className="article-menu"
-                source={markdown}
-                // headingTopOffset={0} //锚点时距离顶部默认值
-                ordered={false}
-              />
+                {tocify && tocify.render()}
             </div>
           </Affix>
         </Col>
@@ -119,7 +110,7 @@ Detail.getInitialProps = async(context) => {
   const { id } = context.query
 
   const promise = new Promise((resolve) => {
-    axios('http://127.0.0.1:7001/blog/getArticleById/'+id)
+    axios(servicePath.getArticleById+id)
     .then((res) => {
       resolve(res.data.data[0])
     })
