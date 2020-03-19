@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Card, Input, Button, Spin } from 'antd';
+import { Card, Input, Button, Spin, message } from 'antd';
 import {
   UserOutlined,
   KeyOutlined
 } from '@ant-design/icons';
 
+import { login } from './service';
+
 import './index.css';
 
-const Login = () => {
-  const [useName, setUseName] = useState(''); // 用户名
+const Login = (props) => {
+  const [userName, setUseName] = useState(''); // 用户名
   const [password, setPassword] = useState(''); // 密码
   const [isLoading, setIsLoading] = useState(false); // loading状态标识
 
@@ -17,9 +19,33 @@ const Login = () => {
    */
   const loginSubmmit = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
+    if(!userName) {
+      message.error('用户名不能为空');
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+      return false;
+    } else if(!password) {
+      message.error('密码不能为空');
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+      return false;
+    }
+    const params = {
+      userName,
+      password
+    }
+    // 登陆接口
+    login(params).then(res => {
+      setIsLoading(false);
+      if(res.data.msg === '登录成功') {
+        localStorage.setItem('openId', res.data.openId);
+        props.history.push('/index');
+      } else {
+        message.error('用户名或密码错误');
+      }
+    })
   }
 
 
