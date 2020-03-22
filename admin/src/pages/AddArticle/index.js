@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd';
 
 import marked from 'marked';
+import moment from 'moment';
+
 import {
   getTypeInfo,
   addArticle,
-  updateArticle
+  updateArticle,
+  getArticleById
 } from './service';
 
 import './index.css';
@@ -20,15 +23,21 @@ const AddArticle = (props) => {
   const [markdownContent, setMarkdownContent] = useState('预览内容') //html内容
   const [introduce,setIntroduce] = useState()            //简介的markdown内容
   const [markdownIntro, setMarkdownIntro] = useState('等待编辑') //简介的html内容
-  const [createAt,setCreateAt] = useState()   //发布日期
-  const [updateAt,setUpdateAt] = useState() //修改日志的日期
+  const [time,setTime] = useState()   //发布或更新日期
   const [typeInfo ,setTypeInfo] = useState([]) // 文章类别信息
   const [selectedType,setSelectType] = useState('请选择类型') //选择的文章类别
-  const [btnStatus, setBtnStatus] = useState('发布'); // 文章操作按钮
+  const [statusText, setStatusText] = useState('发布'); // 文章操作按钮
 
   useEffect(() => {
     localStorage.removeItem('openId');
-    getTypeMessage()
+    getTypeMessage();
+    // 获取文章id
+    const { id } = props.match.params;
+    if(id) {
+      setArticleId(id);
+      setStatusText('更新');
+      getArticleInfoById(id)
+    }
   }, []);
 
   marked.setOptions({
@@ -43,7 +52,7 @@ const AddArticle = (props) => {
   });
 
   /**
-   * 绑定博客内容富文本框内容
+   * 绑定文章内容富文本框内容
    * @param {*} e 
    */
   const changeContent = (e) => {
@@ -54,7 +63,7 @@ const AddArticle = (props) => {
   }
 
   /**
-   * 绑定博客简介富文本框内容
+   * 绑定文章简介富文本框内容
    * @param {*} e 
    */
   const changIntroduce = (e) => {
@@ -102,10 +111,12 @@ const AddArticle = (props) => {
     } else if (!introduce) {
       message.error('文章简介不能为空');
       return false;
-    } else if (!createAt) {
-      message.error('发布日期不能为空');
+    } else if (!time) {
+      message.error(`${statusText}日期不能为空`);
       return false;
     }
+
+    console.log(time, 'aaaaaaaaaaa')
 
     // 封装博文信息内容
     const articleInfo = {};
@@ -113,24 +124,26 @@ const AddArticle = (props) => {
     articleInfo.title = articleTitle;
     articleInfo.article_content = articleContent;
     articleInfo.introduce = introduce;
-    const date = createAt.replace('-', '/');
-    articleInfo.createAt = (new Date(date).getTime())/1000;
-    
+    const date = time.replace('-', '/');
+
     // 发布文章
     if(articleId === 0) {
+      articleInfo.createAt = (new Date(date).getTime());
+      console.log(articleInfo.createAt, 'lllll')
       articleInfo.view_count = 0;
       addArticle(articleInfo).then(res => {
         const { insertId, isSuccess } = res.data;
         setArticleId(insertId);
         if(isSuccess) {
           message.success('发布成功');
-          setBtnStatus('更新');
+          setStatusText('更新');
         } else {
           message.error('发布失败');
         }
       })
     } else {
       // 更新文章
+      articleInfo.updateAt = (new Date(date).getTime());
       articleInfo.id = articleId;
       updateArticle(articleInfo).then(res => {
         const { isSuccess } = res.data;
@@ -144,6 +157,24 @@ const AddArticle = (props) => {
     
   }
 
+  /**
+   * 通过文章id获取文章内容信息
+   * @param {文章id} id 
+   */
+  const getArticleInfoById = (id) => {
+    getArticleById(id).then(res => {
+      const articleInfo = res.data.data[0];
+      setArticleTitle(articleInfo.title);
+      setArticleContent(articleInfo.article_content);
+      const html = marked(articleInfo.article_content);
+      setMarkdownContent(html);
+      setIntroduce(articleInfo.introduce);
+      const introHtml = marked(articleInfo.introduce);
+      setMarkdownIntro(introHtml);
+      setSelectType(articleInfo.typeId);
+    });
+  }
+
   return (
     <div>
       <Row gutter={5}>
@@ -152,13 +183,13 @@ const AddArticle = (props) => {
             <Col span={20}>
               <Input
                 value={articleTitle}
-                placeholder="博客标题"
+                placeholder="文章标题"
                 size="middle"
                 onChange={e => {setArticleTitle(e.target.value)}}
               />
             </Col>
             <Col span={4}>
-              <Select defaultValue={selectedType} size="middle" onChange={selectTypeHandle}>
+              <Select value={selectedType} defaultValue={selectedType} size="middle" onChange={selectTypeHandle}>
                 {typeInfo.map(item => {
                   return (
                     <Option key={item.Id} value={item.Id} >
@@ -174,7 +205,8 @@ const AddArticle = (props) => {
               <TextArea
                 className="markdown"
                 rows={30}
-                placeholder="博客内容"
+                placeholder="文章内容"
+                value={articleContent}
                 onChange={changeContent}
               />
             </Col>
@@ -190,12 +222,13 @@ const AddArticle = (props) => {
           <Row>
             <Col span={24}>
               <Button size="middle">暂存</Button>
-              <Button type="primary" size="middle" onClick={publishArticle}>{btnStatus}</Button>
+              <Button type="primary" size="middle" onClick={publishArticle}>{statusText}</Button>
             </Col>
             <Col span={24}>
               <TextArea
                 rows={4}
-                placeholder="博客简介"
+                placeholder="文章简介"
+                value={introduce}
                 onChange={changIntroduce}
               />
               <div
@@ -203,12 +236,20 @@ const AddArticle = (props) => {
                 dangerouslySetInnerHTML = {{ __html: markdownIntro }}
               ></div>
             </Col>
-            <Col span={12}>
+            <Col span={9}>
+              <div className="date-Text">
+                {`${statusText}日期:`}
+              </div>
+            </Col>
+            <Col span={15}>
               <div className="date-select">
                 <DatePicker
-                  placeholder="发布日期"
+                  placeholder={`${statusText}日期`}
                   size="middle"
-                  onChange={(date, dateString) => {setCreateAt(dateString)}}
+                  disabledDate={(current => (current > moment().endOf('day')))}
+                  // defaultValue={moment(moment(createAt).format("YYYY/MM/DD"), 'YYYY/MM/DD')}
+                  // format={'YYYY-MM-DD'}
+                  onChange={(date, dateString) => {setTime(dateString)}}
                 />
               </div>
             </Col>

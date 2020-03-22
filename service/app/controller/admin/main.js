@@ -67,6 +67,66 @@ class MainController extends Controller {
         isSuccess
       }
     }
+
+    /**
+     * 获取文章列表
+     */
+    async getArticleList() {
+      const sql = 'SELECT article.id as id, '+
+                  'article.title as title, '+
+                  'article.introduce as introduce, '+
+                  // 'FROM_UNIXTIME(article.createAt,"%Y-%m-%d %H:%i:%s" ) as createAt,'+
+                  'article.createAt as createAt, '+
+                  'article.updateAt as updateAt, '+
+                  'article.view_count as view_count, '+
+                  'type.typeName as typeName '+
+                  'FROM article LEFT JOIN type ON article.type_id = type.Id '+
+                  'ORDER BY article.id DESC'
+      
+      const result = await this.app.mysql.query(sql);
+
+      this.ctx.body = {
+        data: result
+      }
+    }
+
+    /**
+     * 删除文章信息
+     */
+    async deleteArticle() {
+      const { id } = this.ctx.params;
+      const result = await this.app.mysql.delete('article', { id })
+      
+      this.ctx.body={
+        data: result
+      }
+    }
+
+    /**
+     * 根据文章id获取文章信息
+     */
+    async getArticleById() {
+      const { id } = this.ctx.params
+      // ？？ 优化时需要判断前端是否传递了id，否则会影响业务流程
+
+      const sql = 'SELECT article.id as id, '+
+                  'article.title as title, '+
+                  'article.article_content as article_content, '+
+                  'article.introduce as introduce, '+
+                  // 'FROM_UNIXTIME(article.createAt,"%Y-%m-%d %H:%i:%s" ) as createAt,'+
+                  'article.createAt as createAt, '+
+                  'article.view_count as view_count, '+
+                  'type.typeName as typeName, '+
+                  'type.id as typeId '+
+                  'FROM article LEFT JOIN type ON article.type_id = type.Id '+
+                  'WHERE article.id= '+id
+      
+      const result = await this.app.mysql.query(sql);
+
+      this.ctx.body = {
+        data: result
+      }
+    }
 }
 
 module.exports = MainController

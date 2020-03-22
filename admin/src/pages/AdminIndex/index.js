@@ -7,37 +7,56 @@ import {
 } from '@ant-design/icons';
 
 import AddArticle from '../AddArticle';
+import ArticleList from '../ArticleList';
 
 import './index.css';
 
+
 const { Header, Content, Footer, Sider } = Layout;
 
-const AdminIndex = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const AdminIndex = (props) => {
+  const [collapsed, setCollapsed] = useState(false); // menu菜单闭合
 
   // 控制导航菜单的闭合
   const onCollapse = collapsed => {
     setCollapsed(collapsed)
   };
 
+  // 菜单选择路由跳转函数
+  const selectHandleMenu = (e) => {
+    switch(e.key) {    
+      case 'articleList':
+        props.history.push('/index/list/');
+        break;
+      case 'message':
+        props.history.push('/index/');
+        break;
+      case 'personal':
+        props.history.push('/index/');
+        break;
+      default:
+        props.history.push('/index/');
+    }
+  }
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-          <Menu.Item key="1">
+        <Menu theme="dark" defaultSelectedKeys={['workSpace']} mode="inline" onClick={selectHandleMenu}>
+          <Menu.Item key="workSpace">
             <PieChartOutlined />
             <span>工作台</span>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="articleList">
             <DesktopOutlined />
             <span>文章管理</span>
           </Menu.Item>
-          <Menu.Item key="3">
+          <Menu.Item key="message">
             <PieChartOutlined />
             <span>留言管理</span>
           </Menu.Item>
-          <Menu.Item key="4">
+          <Menu.Item key="personal">
             <DesktopOutlined />
             <span>个人管理</span>
           </Menu.Item>
@@ -53,6 +72,8 @@ const AdminIndex = () => {
           <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
             <div>
               <Route path="/index/" exact component={AddArticle} />
+              <Route path="/index/list/" exact component={ArticleList} />
+              <Route path="/index/update/:id" exact component={AddArticle} />
             </div>
           </div>
         </Content>
