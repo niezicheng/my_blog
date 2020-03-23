@@ -127,6 +127,37 @@ class MainController extends Controller {
         data: result
       }
     }
+
+    /**
+     * 获取留言信息
+     */
+    async getCommentsInfo() {
+      const sql = 'SELECT comment.id as id, '+
+                  'comment.commentContent as commentContent, '+
+                  'comment.createAt as createAt, '+
+                  'article.title as title '+
+                  'FROM comment LEFT JOIN article ON comment.articleId = article.Id '+
+                  'ORDER BY comment.id DESC'
+
+      const result = await this.app.mysql.query(sql)
+
+      this.ctx.body = {
+        data: result
+      }
+    }
+
+    /**
+     * 删除文章留言信息
+     */
+    async deleteComment() {
+      const { id } = this.ctx.params
+
+      const result = await this.app.mysql.delete('comment', { id })
+
+      this.ctx.body = {
+        data: result
+      }
+    }
 }
 
 module.exports = MainController

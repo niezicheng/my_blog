@@ -9,5 +9,7 @@ module.exports = app => {
   router.get('/admin/getArticleList', adminAuthor, controller.admin.main.getArticleList) // 获取文章列表信息
   router.get('/admin/deleteArticle/:id', adminAuthor, controller.admin.main.deleteArticle) // 删除文章列表信息
   router.get('/admin/getArticleById/:id', adminAuthor, controller.admin.main.getArticleById) // 通过文章id获取文章列表信息
+  router.get('/admin/getCommentsInfo', adminAuthor, controller.admin.main.getCommentsInfo) // 获取留言列表信息
+  router.get('/admin/deleteComment/:id', adminAuthor, controller.admin.main.deleteComment) // 删除留言信息
   
 }

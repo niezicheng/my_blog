@@ -8,6 +8,7 @@ import {
 
 import AddArticle from '../AddArticle';
 import ArticleList from '../ArticleList';
+import CommentsList from '../CommentsList';
 
 import './index.css';
 
@@ -28,8 +29,8 @@ const AdminIndex = (props) => {
       case 'articleList':
         props.history.push('/index/list/');
         break;
-      case 'message':
-        props.history.push('/index/');
+      case 'comment':
+        props.history.push('/index/comment/');
         break;
       case 'personal':
         props.history.push('/index/');
@@ -52,7 +53,7 @@ const AdminIndex = (props) => {
             <DesktopOutlined />
             <span>文章管理</span>
           </Menu.Item>
-          <Menu.Item key="message">
+          <Menu.Item key="comment">
             <PieChartOutlined />
             <span>留言管理</span>
           </Menu.Item>
@@ -74,6 +75,7 @@ const AdminIndex = (props) => {
               <Route path="/index/" exact component={AddArticle} />
               <Route path="/index/list/" exact component={ArticleList} />
               <Route path="/index/update/:id" exact component={AddArticle} />
+              <Route path="/index/comment/" exact component={CommentsList} />
             </div>
           </div>
         </Content>
