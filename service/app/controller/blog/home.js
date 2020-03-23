@@ -84,6 +84,31 @@ class HomeController extends Controller {
     }
   }
 
+  /**
+   * 添加留言信息
+   */
+  async addArticleComment() {
+    const tempComment = this.ctx.request.body
+
+    const result = await this.app.mysql.insert('comment', tempComment)
+    const isSuccess = result.affectedRows === 1 // 返回true添加成功，否则，添加失败
+
+      this.ctx.body = {
+        isSuccess
+      }
+  }
+
+  /**
+   * 获取用户信息
+   */
+  async getUserInfo() {
+    const result = await this.app.mysql.select('userInfo')
+
+    this.ctx.body = {
+      data: result
+    }
+  }
+
 }
 
 module.exports = HomeController;

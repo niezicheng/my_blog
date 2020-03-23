@@ -86,3 +86,8 @@ iframe{
 .ant-anchor-wrapper{
   padding: 5px !important;
 }
+
+.detail-comment {
+  position: relative;
+  bottom: 0px;
+}

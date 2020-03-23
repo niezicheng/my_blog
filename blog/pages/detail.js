@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 
 import axios from 'axios'
+import moment from 'moment'
 
 import marked from 'marked'
 import highlightjs from 'highlight.js'
@@ -17,6 +18,7 @@ import Tocify from '../components/tocify.tsx'
 import Header from '../components/Header'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
+import MyComment from '../components/MyComment'
 import Footer from '../components/Footer'
 
 import servicePath from '../config'
@@ -24,7 +26,6 @@ import servicePath from '../config'
 import '../static/style/pages/detail.css'
 
 const Detail = (props) => {
-
   const tocify = new Tocify() // 文章详情导航栏插件
   const renderer = new marked.Renderer()
 
@@ -57,7 +58,7 @@ const Detail = (props) => {
   return (
     <div>
       <Head>
-        <title>Detail</title>
+        <title>{props.title}</title>
       </Head>
       <Affix offsetTop={0}>
         <Header />
@@ -68,26 +69,25 @@ const Detail = (props) => {
             <div className="bread-div">
               <Breadcrumb>
                 <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-                <Breadcrumb.Item><a href="/list">视频列表</a></Breadcrumb.Item>
-                <Breadcrumb.Item>xxx</Breadcrumb.Item>
+                <Breadcrumb.Item><a href="/list">{props.typeName}</a></Breadcrumb.Item>
+                <Breadcrumb.Item>{props.title}</Breadcrumb.Item>
               </Breadcrumb>
             </div>
           </div>
           <div>
             <div className="detailed-title">
-              React实战教程-技术开发
+              {props.title}
             </div>
             <div className="list-icon center">
-              <span><CalendarOutlined /> 2020-03-01</span>
-              <span><FolderOutlined /> 视频教程</span>
-              <span><FireOutlined /> 6578人</span>
+              <span><CalendarOutlined /> {moment(props.createAt).format('YYYY-MM-DD')}</span>
+              <span><FolderOutlined /> {props.typeName}</span>
+              <span><FireOutlined /> {props.view_count}人</span>
             </div>
             <div className="detailed-content" 
               dangerouslySetInnerHTML={{__html: html}}
             >
             </div>
           </div>
-          
         </Col>
         <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
           <Author />
@@ -99,6 +99,12 @@ const Detail = (props) => {
             </div>
           </Affix>
         </Col>
+      </Row>
+      <Row className="comm-main" type="flex" justify="center">
+        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
+          <MyComment articleId={props.id} />
+        </Col>
+        <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}></Col>
       </Row>
       <Footer />
     </div>

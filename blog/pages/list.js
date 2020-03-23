@@ -60,7 +60,7 @@ const MyList = (list) => {
           <div className="bread-div">
             <Breadcrumb>
               <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-              <Breadcrumb.Item>视频教程</Breadcrumb.Item>
+              <Breadcrumb.Item>{mylist ? mylist[0].typeName : '暂无该类别文章'}</Breadcrumb.Item>
             </Breadcrumb>
           </div>
           <List 
@@ -75,7 +75,7 @@ const MyList = (list) => {
                   </Link>
                 </div>
                 <div className="list-icon">
-                  <span><CalendarOutlined /> {moment(item.createAt).format('YYYY-MM-DD HH:mm:ss')}</span> 
+                  <span><CalendarOutlined /> {moment(item.createAt).format('YYYY-MM-DD')}</span> 
                   <span><FolderOutlined /> {item.typeName}</span>
                   <span><FireOutlined /> {item.view_count} 人</span>
                 </div>

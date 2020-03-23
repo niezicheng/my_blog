@@ -1,5 +1,5 @@
-import React from 'react'
-import { Avatar, Divider } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Avatar, Divider, Tooltip } from 'antd'
 import {
   GithubOutlined,
   QqOutlined,
@@ -8,21 +8,49 @@ import {
 } from '@ant-design/icons'
 
 import '../static/style/components/author.css'
+import axios from 'axios'
+import servicePath from '../config'
 
 const Author = () => {
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    getUserInfo()
+  }, [])
+
+  // 获取用户相关信息
+  const getUserInfo = () => {
+    axios(servicePath.getUserInfo).then(res => {
+      const { data } = res.data
+      setUserInfo(data[0])
+    })
+  }
+
   return (
     <div className="author-div comm-box">
       {/* <div><Avatar size={100} src="http://blogimages.jspang.com/blogtouxiang1.jpg" /></div> */}
       <div><Avatar size={100} src="../static/images/avatar.jpg" /></div>
-      <div className="author-nickname">清香的Orange</div>
+      <div className="author-nickname">{userInfo.nickName}</div>
       <div className="author-introduction">
-        一名前端程序小白，正在不断的学习过程中，对前端基础有些许了解，主学react框架。
+        {userInfo.introduce}
       </div>
       <Divider>社交账号</Divider>
-      <Avatar size={28} icon={<GithubOutlined />} className="account" />
-      <Avatar size={28} icon={<WeiboCircleOutlined />} className="account" />
-      <Avatar size={28} icon={<QqOutlined />} className="account" />
-      <Avatar size={28} icon={<WechatOutlined />} className="account" />
+      <Tooltip placement="topLeft" title={userInfo.github}>
+        <a href={userInfo.github} target="_blank">
+          <Avatar size={26} icon={<GithubOutlined />} className="account" />
+        </a>
+      </Tooltip>
+      <Tooltip placement="topLeft" title={userInfo.blog} target="_blank">
+        <a href={userInfo.blog} target="_blank">
+          <Avatar size={26} icon={<WeiboCircleOutlined />} className="account" />
+        </a>
+      </Tooltip>
+      <Tooltip placement="topLeft" title={userInfo.email}>
+      <Avatar size={26} icon={<QqOutlined />} className="account" />
+      </Tooltip>
+      <Tooltip placement="topLeft" title={userInfo.weiXin}>
+        <Avatar size={26} icon={<WechatOutlined />} className="account" />
+      </Tooltip>  
     </div>
   )
 }
