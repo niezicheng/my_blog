@@ -10,6 +10,8 @@ const servicePath = {
   getArticleById: baseUrl + 'getArticleById/', // 通过文章id获取文章信息接口
   getCommentsInfo: baseUrl + 'getCommentsInfo', // 获取留言信息接口
   deleteComment: baseUrl + 'deleteComment/', // 获取留言信息接口
+  getUserInfo: baseUrl + 'getUserInfo', // 获取个人信息接口
+  updateUserInfo: baseUrl + 'updateUserInfo', // 更新个人信息接口
 }
 
 export default servicePath

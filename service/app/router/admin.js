@@ -11,5 +11,7 @@ module.exports = app => {
   router.get('/admin/getArticleById/:id', adminAuthor, controller.admin.main.getArticleById) // 通过文章id获取文章列表信息
   router.get('/admin/getCommentsInfo', adminAuthor, controller.admin.main.getCommentsInfo) // 获取留言列表信息
   router.get('/admin/deleteComment/:id', adminAuthor, controller.admin.main.deleteComment) // 删除留言信息
+  router.get('/admin/getUserInfo', adminAuthor, controller.admin.main.getUserInfo) // 获取个人信息
+  router.post('/admin/updateUserInfo', adminAuthor, controller.admin.main.updateUserInfo) // 更新个人信息
   
 }

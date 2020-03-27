@@ -158,6 +158,34 @@ class MainController extends Controller {
         data: result
       }
     }
+
+    /**
+     * 查询个人信息
+     */
+    async getUserInfo() {
+      const result = await this.app.mysql.select('userinfo');
+
+      this.ctx.body = {
+        data: result
+      }
+    }
+
+    /**
+     * 更新个人信息
+     */
+    async updateUserInfo() {
+      const tempUserInfo = this.ctx.request.body
+      console.log(tempUserInfo);
+
+      const result = await this.app.mysql.update('userinfo', tempUserInfo)
+      const isSuccess = result.affectedRows === 1
+
+      this.ctx.body = {
+        isSuccess
+      }
+    }
+
+
 }
 
 module.exports = MainController

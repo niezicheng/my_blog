@@ -116,20 +116,16 @@ const AddArticle = (props) => {
       return false;
     }
 
-    console.log(time, 'aaaaaaaaaaa')
-
     // 封装博文信息内容
     const articleInfo = {};
     articleInfo.type_id = selectedType;
     articleInfo.title = articleTitle;
     articleInfo.article_content = articleContent;
     articleInfo.introduce = introduce;
-    const date = time.replace('-', '/');
 
     // 发布文章
     if(articleId === 0) {
-      articleInfo.createAt = (new Date(date).getTime());
-      console.log(articleInfo.createAt, 'lllll')
+      articleInfo.createAt = (new Date(time).getTime());
       articleInfo.view_count = 0;
       addArticle(articleInfo).then(res => {
         const { insertId, isSuccess } = res.data;
@@ -143,7 +139,7 @@ const AddArticle = (props) => {
       })
     } else {
       // 更新文章
-      articleInfo.updateAt = (new Date(date).getTime());
+      articleInfo.updateAt = (new Date(time).getTime());
       articleInfo.id = articleId;
       updateArticle(articleInfo).then(res => {
         const { isSuccess } = res.data;
@@ -247,9 +243,10 @@ const AddArticle = (props) => {
                   placeholder={`${statusText}日期`}
                   size="middle"
                   disabledDate={(current => (current > moment().endOf('day')))}
-                  // defaultValue={moment(moment(createAt).format("YYYY/MM/DD"), 'YYYY/MM/DD')}
-                  // format={'YYYY-MM-DD'}
-                  onChange={(date, dateString) => {setTime(dateString)}}
+                  onChange={(date, dateString) => {
+                    const time = moment(date).format("YYYY-MM-DD HH:mm:ss")
+                    setTime(time)
+                  }}
                 />
               </div>
             </Col>

@@ -1,0 +1,44 @@
+.row-warpper {
+  border-bottom: 1px solid #ededed;
+  padding: 1rem;
+}
+.divider-css {
+  height: 7rem;
+}
+.divider-social {
+  height: 11rem;
+}
+.item-title {
+  font-weight: 400;
+  color: #000000;
+}
+.content-div {
+  padding-left: 2.5rem;
+  position: relative;
+}
+.need-btn {
+  padding-bottom: 2rem;
+}
+.need-btn .ant-btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.content-div .ant-input-affix-wrapper {
+  margin-bottom: 1rem;
+}
+
+.userName-div, .nickName-div, .password-div {
+  line-height: 2rem;
+}
+
+.text {
+  color: #000000;
+ font-weight: 400;
+}
+
+.updateBtn {
+  color: #1e90ff; 
+  margin-left: .5rem;
+  cursor: pointer;
+}

@@ -9,6 +9,7 @@ import {
 import AddArticle from '../AddArticle';
 import ArticleList from '../ArticleList';
 import CommentsList from '../CommentsList';
+import Personal from '../Personal';
 
 import './index.css';
 
@@ -17,6 +18,7 @@ const { Header, Content, Footer, Sider } = Layout;
 
 const AdminIndex = (props) => {
   const [collapsed, setCollapsed] = useState(false); // menu菜单闭合
+  const [subMenu, setSubMenu] = useState('工作台'); // 子menu名称
 
   // 控制导航菜单的闭合
   const onCollapse = collapsed => {
@@ -28,15 +30,19 @@ const AdminIndex = (props) => {
     switch(e.key) {    
       case 'articleList':
         props.history.push('/index/list/');
+        setSubMenu('文章管理');
         break;
       case 'comment':
         props.history.push('/index/comment/');
+        setSubMenu('留言管理');
         break;
       case 'personal':
-        props.history.push('/index/');
+        props.history.push('/index/personal/');
+        setSubMenu('个人管理');
         break;
       default:
         props.history.push('/index/');
+        setSubMenu('工作台');
     }
   }
 
@@ -68,7 +74,7 @@ const AdminIndex = (props) => {
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>后台管理系统</Breadcrumb.Item>
-            <Breadcrumb.Item>工作台</Breadcrumb.Item>
+            <Breadcrumb.Item>{subMenu}</Breadcrumb.Item>
           </Breadcrumb>
           <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
             <div>
@@ -76,6 +82,7 @@ const AdminIndex = (props) => {
               <Route path="/index/list/" exact component={ArticleList} />
               <Route path="/index/update/:id" exact component={AddArticle} />
               <Route path="/index/comment/" exact component={CommentsList} />
+              <Route path="/index/personal/" exact component={Personal} />
             </div>
           </div>
         </Content>
