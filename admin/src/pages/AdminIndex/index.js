@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from 'antd';
 import { Route } from 'react-router-dom';
 import {
   DesktopOutlined,
-  PieChartOutlined,
+  MessageOutlined,
+  ReadOutlined,
+  UserOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  LogoutOutlined,
+  DownOutlined
 } from '@ant-design/icons';
 
 import AddArticle from '../AddArticle';
@@ -11,6 +17,7 @@ import ArticleList from '../ArticleList';
 import CommentsList from '../CommentsList';
 import Personal from '../Personal';
 
+import avatar from '../../static/avatar.jpg';
 import './index.css';
 
 
@@ -20,7 +27,12 @@ const AdminIndex = (props) => {
   const [collapsed, setCollapsed] = useState(false); // menu菜单闭合
   const [subMenu, setSubMenu] = useState('工作台'); // 子menu名称
 
-  // 控制导航菜单的闭合
+  // 头部控制导航菜单的闭合
+  const toggle = () => {
+    setCollapsed(!collapsed);
+  };
+
+  // 底部控制导航菜单的闭合
   const onCollapse = collapsed => {
     setCollapsed(collapsed)
   };
@@ -46,31 +58,66 @@ const AdminIndex = (props) => {
     }
   }
 
+  // 退出登录
+  const logout = () => {
+    localStorage.clear();
+    // localStorage.removeItem('openId');
+    // props.history.push('/');
+  }
+
+  const menu = (
+    <Menu onClick={logout}>
+      <Menu.Item>
+        <a rel="noopener noreferrer" href="/">
+          <LogoutOutlined /> 退出
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-        <div className="logo" />
+        <div className="logo">{`${collapsed ? 'BLOG' : 'BLOG后台管理系统'}`}</div>
         <Menu theme="dark" defaultSelectedKeys={['workSpace']} mode="inline" onClick={selectHandleMenu}>
           <Menu.Item key="workSpace">
-            <PieChartOutlined />
+            <DesktopOutlined />
             <span>工作台</span>
           </Menu.Item>
           <Menu.Item key="articleList">
-            <DesktopOutlined />
+            <ReadOutlined />
             <span>文章管理</span>
           </Menu.Item>
           <Menu.Item key="comment">
-            <PieChartOutlined />
+            <MessageOutlined />
             <span>留言管理</span>
           </Menu.Item>
           <Menu.Item key="personal">
-            <DesktopOutlined />
+            <UserOutlined />
             <span>个人管理</span>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }} />
+        <Header className="site-layout-background" style={{ padding: 0 }}>
+          <div className="header-left">
+          {
+            collapsed ? (
+              <MenuUnfoldOutlined style={{ fontSize: '26px'}} onClick={toggle} />
+            ) : (
+              <MenuFoldOutlined style={{ fontSize: '26px' }} onClick={toggle} />
+            )
+          }
+          </div>
+          <div className="header-right">
+            <Dropdown overlay={menu} placement="bottomLeft">
+              <span className="header-nickname">
+                清香的orange <DownOutlined />
+              </span>
+            </Dropdown>
+            <Avatar src={avatar} size={45} />
+          </div>
+        </Header>
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>后台管理系统</Breadcrumb.Item>

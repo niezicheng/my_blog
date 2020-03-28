@@ -52,22 +52,24 @@ const Login = (props) => {
   return (
     <div className="login-div">
       <Spin tip="Loading..." spinning={isLoading}>
-        <Card title="Person blog System" bordered style={{width: 400}}>
+        <Card title="个人博客后台管理系统" bordered style={{width: 400}}>
           <Input
             id="useName"
-            size="large"
-            placeholder="Enter your useName"
-            prefix={<UserOutlined style={{color: 'rgba: (0, 0, 0, .25)'}} />}
+            size="middle"
+            placeholder="用户名"
+            prefix={<UserOutlined className="input-icon" />}
             onChange={(e) => {setUseName(e.target.value)}}
+            style={{ marginBottom: '1rem' }}
           />
           <Input.Password
             id="password"
-            size="large"
-            placeholder="Enter your password"
-            prefix={<KeyOutlined style={{color: 'rgba: (0, 0, 0, .25)'}} />}
+            size="middle"
+            placeholder="密码"
+            prefix={<KeyOutlined className="input-icon" />}
             onChange={(e) => {setPassword(e.target.value)}}
+            style={{ marginBottom: '2rem' }}
           />
-          <Button type="primary" size="large" block onClick={loginSubmmit}>Login in</Button>
+          <Button type="primary" size="middle" block onClick={loginSubmmit}>Login in</Button>
         </Card>
       </Spin>
     </div>

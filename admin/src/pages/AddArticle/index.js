@@ -59,7 +59,9 @@ const AddArticle = (props) => {
     const { value } = e.target;
     setArticleContent(value);
     let html = marked(value);
-    setMarkdownContent(html);
+    setMarkdownContent(html || '预览内容');
+    
+    
   }
 
   /**
@@ -70,7 +72,7 @@ const AddArticle = (props) => {
     const { value } = e.target;
     setIntroduce(value);
     const html = marked(value);
-    setMarkdownIntro(html);
+    setMarkdownIntro(html || '等待编辑');
   }
 
   /**
@@ -175,7 +177,7 @@ const AddArticle = (props) => {
     <div>
       <Row gutter={5}>
         <Col span={18}>
-          <Row gutter={10}>
+          <Row gutter={[12, 12]} >
             <Col span={20}>
               <Input
                 value={articleTitle}
@@ -185,7 +187,7 @@ const AddArticle = (props) => {
               />
             </Col>
             <Col span={4}>
-              <Select value={selectedType} defaultValue={selectedType} size="middle" onChange={selectTypeHandle}>
+              <Select style={{ width: '7rem' }} value={selectedType} defaultValue={selectedType} size="middle" onChange={selectTypeHandle}>
                 {typeInfo.map(item => {
                   return (
                     <Option key={item.Id} value={item.Id} >
@@ -204,6 +206,7 @@ const AddArticle = (props) => {
                 placeholder="文章内容"
                 value={articleContent}
                 onChange={changeContent}
+                allowClear
               />
             </Col>
             <Col span={12}>
@@ -215,9 +218,9 @@ const AddArticle = (props) => {
           </Row>
         </Col>
         <Col span={6}>
-          <Row>
+          <Row gutter={[0, 12]}>
             <Col span={24}>
-              <Button size="middle">暂存</Button>
+              <Button size="middle" style={{ marginRight: '.6rem' }}>暂存</Button>
               <Button type="primary" size="middle" onClick={publishArticle}>{statusText}</Button>
             </Col>
             <Col span={24}>
@@ -226,6 +229,7 @@ const AddArticle = (props) => {
                 placeholder="文章简介"
                 value={introduce}
                 onChange={changIntroduce}
+                allowClear
               />
               <div
                 className="introduce-html"

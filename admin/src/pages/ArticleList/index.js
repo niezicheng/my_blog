@@ -97,7 +97,7 @@ const ArticleList = (props) => {
                 {item.view_count}
               </Col>
               <Col span={3}>
-                <Button type="primary" size="small" onClick={() => {updateArticle(item.id)}}>修改</Button>
+                <Button style={{ marginRight: '.6rem' }} type="primary" size="small" onClick={() => {updateArticle(item.id)}}>修改</Button>
                 <Button type="danger" size="small" onClick={() => {delArticle(item.id)}}>删除</Button>
               </Col>
             </Row>

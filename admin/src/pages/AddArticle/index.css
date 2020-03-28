@@ -3,13 +3,13 @@
   max-height: 745px;
 }
 .show-html{
-  padding:10px;
+  padding:.3rem;
   border:1px solid #ddd;
   border-radius: 5px;
-  font-size:16px;
-  height: 745px;
+  height: 687px;
   background-color: #f0f0f0;
   overflow: auto;
+  word-wrap: break-word;
 }
 
 .show-html h1{
@@ -47,12 +47,14 @@
   background-color: #f8f8f8;
 }
 .introduce-html{
-  padding:10px;
+  padding: 7px 13px;
+  margin-top: .7rem;
+  height: 120px;
   border:1px solid #ddd;
   border-radius: 5px;
-  font-size:16px;
-
   background-color: #f0f0f0;
+  overflow: auto;
+  word-wrap: break-word;
 }
 
 
