@@ -48,7 +48,7 @@ const Author = () => {
       <Tooltip placement="topLeft" title={userInfo.email}>
       <Avatar size={26} icon={<QqOutlined />} className="account" />
       </Tooltip>
-      <Tooltip placement="topLeft" title={userInfo.weiXin}>
+      <Tooltip placement="topLeft" title={userInfo.weixin}>
         <Avatar size={26} icon={<WechatOutlined />} className="account" />
       </Tooltip>  
     </div>

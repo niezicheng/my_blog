@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Row, Col, List, Affix } from 'antd'
+import { Row, Col, List, Affix, BackTop } from 'antd'
 import {
   CalendarOutlined,
   FolderOutlined,
@@ -44,6 +44,7 @@ const Home = (list) => {
 
   return (
     <div>
+      <BackTop />
       <Head>
         <title>首页</title>
       </Head>

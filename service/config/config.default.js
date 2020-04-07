@@ -53,10 +53,27 @@ module.exports = appInfo => {
   };
 
   config.cors = {
-    // origin: '*', //允许所有请求源进行访问接口
-    origin: 'http://localhost:3000', //只允许这个域进行访问接口
+    // origin: '*', //允许所有请求源进行访问接口【当开启凭证是无效】
+    // origin: 'http://localhost:3000', //只允许这个域进行访问接口
+    origin: ctx => ctx.get('origin'), //允许所有请求源进行访问接口【开启凭证是仍然可以】
     credentials: true,   // 开启认证,允许cookie可以跨域
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS' // 允许请求的方式
+  };
+
+  config.multipart = {
+    mode: 'stream',
+    fileModeMatch: /^\/uploadFile$/,//    uploadFile接口使用file模式，其他使用stream模式
+    // tmpdir: path.join(os.tmpdir(), 'egg-multipart-tmp', appInfo.name),
+    // cleanSchedule: {
+    //   // run tmpdir clean job on every day 04:30 am
+    //   cron: '0 30 4 * * *',
+    // },
+    fileSize: '50mb',//    文件大小限制-string, 错误：400 Bad request
+    whitelist: [
+      '.jpg', '.jpeg', // image/jpeg
+      '.png', // image/png, image/x-png
+      '.gif', // image/gif
+    ]//    文件类型-白名单-array, 错误：400 Bad request
   };
 
   return {

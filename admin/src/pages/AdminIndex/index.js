@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from 'antd';
+import { Layout, Menu, Breadcrumb, Avatar, Dropdown, message } from 'antd';
 import { Route } from 'react-router-dom';
 import {
   DesktopOutlined,
@@ -11,6 +11,8 @@ import {
   LogoutOutlined,
   DownOutlined
 } from '@ant-design/icons';
+
+import { logout } from './service';
 
 import AddArticle from '../AddArticle';
 import ArticleList from '../ArticleList';
@@ -59,18 +61,22 @@ const AdminIndex = (props) => {
   }
 
   // 退出登录
-  const logout = () => {
-    localStorage.clear();
-    // localStorage.removeItem('openId');
-    // props.history.push('/');
+  const myLogout = () => {
+    logout().then(res => {
+      const { isSuccess } = res.data;
+      if(isSuccess) {
+        message.success('登出成功');
+        props.history.push('/');
+      } else {
+        message.error('登出失败');
+      }
+    });
   }
 
   const menu = (
-    <Menu onClick={logout}>
-      <Menu.Item>
-        <a rel="noopener noreferrer" href="/">
-          <LogoutOutlined /> 退出
-        </a>
+    <Menu>
+      <Menu.Item onClick={myLogout}>
+        <LogoutOutlined /> 退出
       </Menu.Item>
     </Menu>
   );

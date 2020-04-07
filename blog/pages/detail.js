@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { Row, Col, Affix, Breadcrumb } from 'antd'
+import { Row, Col, Affix, Breadcrumb, BackTop } from 'antd'
 import {
   CalendarOutlined,
   FolderOutlined,
@@ -57,6 +57,7 @@ const Detail = (props) => {
 
   return (
     <div>
+      <BackTop />
       <Head>
         <title>{props.title}</title>
       </Head>

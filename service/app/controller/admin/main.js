@@ -2,6 +2,9 @@
 
 const Controller = require('egg').Controller
 
+const fs = require('fs');
+const path = require('path');
+
 class MainController extends Controller {
     async index() {
       this.ctx.body="hello !!!"
@@ -27,6 +30,22 @@ class MainController extends Controller {
         this.ctx.body = {
           'msg': '登录失败'
         }
+      }
+    }
+
+    /**
+     * 用户登出
+     */
+    async logout() {
+      this.ctx.session = null
+      let isSuccess = false
+      // session中openId不存在，登出成功
+      if(!this.ctx.session) {
+        isSuccess = true
+      }
+      
+      this.ctx.body = {
+        isSuccess
       }
     }
 
@@ -175,7 +194,6 @@ class MainController extends Controller {
      */
     async updateUserInfo() {
       const tempUserInfo = this.ctx.request.body
-      console.log(tempUserInfo);
 
       const result = await this.app.mysql.update('userinfo', tempUserInfo)
       const isSuccess = result.affectedRows === 1
@@ -185,7 +203,17 @@ class MainController extends Controller {
       }
     }
 
-
+    /**
+     * 上传文件
+     */
+    async upload() {
+      const { ctx } = this;
+      console.log(111111111111)
+      console.log('qqqq', ctx);
+      this.ctx.body = {
+        hello: '123'
+      }
+    }
 }
 
 module.exports = MainController
