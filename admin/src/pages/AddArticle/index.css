@@ -11,11 +11,9 @@
   overflow: auto;
   word-wrap: break-word;
 }
-
 .show-html h1{
   font-size:30px;
 }
-
 .show-html h2{
   font-size:28px;
   border-bottom: 1px solid #cbcbcb;
@@ -23,7 +21,6 @@
 .show-html h3{
   font-size:24px;
 }
-
 .show-html pre{
   display: block;
   background-color: #f0f0f0;
@@ -56,12 +53,13 @@
   overflow: auto;
   word-wrap: break-word;
 }
-
+.show-html img{
+  width: 100%;
+}
 
 .introduce-html h1{
   font-size:30px;
 }
-
 .introduce-html h2{
   font-size:28px;
   border-bottom: 1px solid #cbcbcb;
@@ -69,7 +67,6 @@
 .introduce-html h3{
   font-size:24px;
 }
-
 .introduce-html pre{
   display: block;
   background-color: #f0f0f0;
@@ -92,6 +89,7 @@
   padding: 10px 10px 10px 30px; 
   background-color: #f8f8f8;
 }
+
 .date-Text {
   margin-top:10px;
   height: 32px;

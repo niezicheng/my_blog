@@ -15,5 +15,6 @@ module.exports = app => {
   router.get('/admin/getUserInfo', adminAuthor, controller.admin.main.getUserInfo) // 获取个人信息
   router.post('/admin/updateUserInfo', adminAuthor, controller.admin.main.updateUserInfo) // 更新个人信息
   router.post('/admin/upload', adminAuthor, controller.admin.main.upload) // 更新个人信息
+  router.get('/admin/getArticleByTypeId/:id', adminAuthor, controller.admin.main.getArticleByTypeId) // 根据文章类型id获取文章信息
   
 }

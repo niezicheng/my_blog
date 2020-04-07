@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Row, Col, Input, Select, Button, DatePicker, message, Tooltip } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 import marked from 'marked';
 import moment from 'moment';
@@ -28,6 +29,21 @@ const AddArticle = (props) => {
   const [selectedType,setSelectType] = useState('请选择类型') //选择的文章类别
   const [statusText, setStatusText] = useState('发布'); // 文章操作按钮
 
+  /**
+   * 获取文章类型信息
+   */
+  const getTypeMessage = useCallback(() => {
+    getTypeInfo().then(res => {
+      const value = res.data.data;
+      if(value === '没有登录') {
+        localStorage.removeItem('openId');
+        props.history.push('/');
+      } else {
+        setTypeInfo(value);
+      }
+    })
+  }, [props.history]);
+
   useEffect(() => {
     localStorage.removeItem('openId');
     getTypeMessage();
@@ -38,7 +54,7 @@ const AddArticle = (props) => {
       setStatusText('更新');
       getArticleInfoById(id)
     }
-  }, []);
+  }, [getTypeMessage, props.match.params]);
 
   marked.setOptions({
     renderer: new marked.Renderer(),
@@ -73,21 +89,6 @@ const AddArticle = (props) => {
     setIntroduce(value);
     const html = marked(value);
     setMarkdownIntro(html || '等待编辑');
-  }
-
-  /**
-   * 获取文章类型信息
-   */
-  const getTypeMessage = () => {
-    getTypeInfo().then(res => {
-      const value = res.data.data;
-      if(value === '没有登录') {
-        localStorage.removeItem('openId');
-        props.history.push('/');
-      } else {
-        setTypeInfo(value);
-      }
-    })
   }
 
   /**
@@ -222,6 +223,11 @@ const AddArticle = (props) => {
             <Col span={24}>
               <Button size="middle" style={{ marginRight: '.6rem' }}>暂存</Button>
               <Button type="primary" size="middle" onClick={publishArticle}>{statusText}</Button>
+              <Tooltip placement="topRight" title='Makedown基本用法'>
+                <a href='https://www.jianshu.com/p/f3a872c4379b' target='_blank'>
+                  <InfoCircleOutlined style={{ fontSize: '1.2rem', marginLeft: '5rem' }} />
+                </a>
+              </Tooltip>
             </Col>
             <Col span={24}>
               <TextArea

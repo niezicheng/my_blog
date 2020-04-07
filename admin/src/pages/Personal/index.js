@@ -69,14 +69,15 @@ const Personal = () => {
         params = {...userInfo, password};
       }
       updateUserMessage(params);
-    }).catch(err => {
-      console.log(err);
+    }).catch(() => {
+      setConfirmLoading(false);
     })
   };
 
   // 显示对应的Modal
   const showModal = (modalType) => {
     form.resetFields(); // 清空modal中表单数据信息
+    setConfirmLoading(false);
     setModalType(modalType)
     setVisible(true);
   }

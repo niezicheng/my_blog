@@ -13,6 +13,7 @@ const servicePath = {
   deleteComment: baseUrl + 'deleteComment/', // 获取留言信息接口
   getUserInfo: baseUrl + 'getUserInfo', // 获取个人信息接口
   updateUserInfo: baseUrl + 'updateUserInfo', // 更新个人信息接口
+  getArticleByTypeId: baseUrl + 'getArticleByTypeId/', // 根据文章类型id获取文章信息
 }
 
 export default servicePath

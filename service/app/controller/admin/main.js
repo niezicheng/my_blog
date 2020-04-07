@@ -204,6 +204,27 @@ class MainController extends Controller {
     }
 
     /**
+     * 根据文章类型id获取文章信息
+     */
+    async getArticleByTypeId() {
+      const { id } = this.ctx.params
+      const sql = 'SELECT article.id as id, '+
+                  'article.title as title, '+
+                  'article.article_content as article_content, '+
+                  'article.introduce as introduce, '+
+                  'article.createAt as createAt, '+
+                  'article.view_count as view_count, '+
+                  'type.typeName as typeName, '+
+                  'type.id as typeId '+
+                  'FROM article LEFT JOIN type ON article.type_id = type.Id '+
+                  'WHERE type.id= '+id
+      const result = await this.app.mysql.query(sql);
+      this.ctx.body = {
+        data: result
+      }
+    }
+
+    /**
      * 上传文件
      */
     async upload() {

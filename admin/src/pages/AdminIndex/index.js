@@ -133,6 +133,8 @@ const AdminIndex = (props) => {
             <div>
               <Route path="/index/" exact component={AddArticle} />
               <Route path="/index/list/" exact component={ArticleList} />
+              {/* <Route path="/index/list/:id" exact component={ArticleList} /> */}
+              <Route path="/index/add/" exact component={AddArticle} />
               <Route path="/index/update/:id" exact component={AddArticle} />
               <Route path="/index/comment/" exact component={CommentsList} />
               <Route path="/index/personal/" exact component={Personal} />

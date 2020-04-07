@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { List, Row, Col, Modal, message, Button } from 'antd';
+import { List, Row, Col, Modal, message, Button, Select } from 'antd';
 
 import moment from 'moment';
 
 import {
   getArticleList,
   deleteArticle,
+  getTypeInfo,
+  getArticleByTypeId
 } from './service';
 
 import './index.css';
 
 const { confirm } = Modal;
+const { Option } = Select;
 
 const ArticleList = (props) => {
   const [list, setList] = useState([]); // 文章内容列表
+  const [articleTypeList, setArticleTypeList] = useState([]); // 文章类型
+  const [selectType, setSelectType] = useState('请选择文章类型'); // 文章类型
 
   useEffect(() => {
     getList();
+    getTypeMessage();
   }, [])
 
   // 获取文章列表信息
@@ -24,6 +30,14 @@ const ArticleList = (props) => {
     getArticleList().then(res => {
       setList(res.data.data);
     });
+  }
+
+  // 获取文章类型信息列表
+  const getTypeMessage = () =>{
+    getTypeInfo().then(res => {
+      const {data} = res.data;
+      setArticleTypeList(data);
+    })
   }
 
   // 删除文章列表信息
@@ -51,8 +65,36 @@ const ArticleList = (props) => {
     props.history.push('/index/update/'+id);
   }
 
+  // 添加文章
+  const addArticle = () => {
+    props.history.push('/index/add/');
+  }
+
+  // 选择展示相应类型的文章
+  const handleSelect = (value) => {
+    if(value) {
+      getArticleByTypeId(value).then(res => {
+        const { data } = res.data;
+        setSelectType(value);
+        setList(data);
+      })
+    } else {
+      getList();
+    }    
+  }
+
   return (
-    <div>
+    <>
+      <div className="artical-heard">
+        <Select allowClear defaultValue={selectType} style={{ width: '150px' }} size="middle" onChange={handleSelect}>
+          {articleTypeList.map(item => (
+            <Option key={item.Id} value={item.Id}>
+              {item.typeName}
+            </Option>
+          ))}
+        </Select>
+        <Button type="primary" size="middle" style={{ float: 'right' }} onClick={addArticle}>添加文章</Button>
+      </div>
       <List
         header={
           <Row className="list-div">
@@ -104,7 +146,7 @@ const ArticleList = (props) => {
           </List.Item>
         )}
       />
-    </div>
+    </>
   );
 }
 
