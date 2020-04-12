@@ -1,0 +1,14 @@
+.view-div {
+  margin-top: .5rem;
+}
+.view-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 132px;
+  float: left;
+}
+.view-count {
+  float: left;
+  font-size: 0.8rem;
+}

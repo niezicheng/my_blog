@@ -20,6 +20,7 @@ import servicePath from '../config'
 import Header from '../components/Header'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
+import ViewRank from '../components/ViewRank'
 import Footer from '../components/Footer'
 
 import '../static/style/pages/list.css'
@@ -90,6 +91,7 @@ const MyList = (list) => {
         <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
           <Author />
           <Advert />
+          <ViewRank />
         </Col>
       </Row>
       <Footer />

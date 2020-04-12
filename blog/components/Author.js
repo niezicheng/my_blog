@@ -29,7 +29,7 @@ const Author = () => {
   return (
     <div className="author-div comm-box">
       {/* <div><Avatar size={100} src="http://blogimages.jspang.com/blogtouxiang1.jpg" /></div> */}
-      <div><Avatar size={100} src="../static/images/avatar.jpg" /></div>
+      <div className='avatar'><Avatar size={100} src="../static/images/avatar.jpg" /></div>
       <div className="author-nickname">{userInfo.nickName}</div>
       <div className="author-introduction">
         {userInfo.introduce}

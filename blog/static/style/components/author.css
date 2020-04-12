@@ -19,3 +19,8 @@
   margin-left: .5rem;
   margin-right: .5rem;
 }
+.avatar:hover {
+  transform: rotate(666turn);
+  transition-duration: 59s;
+  transition-timing-function: cubic-bezier(.34, 0, .84, 1)
+}

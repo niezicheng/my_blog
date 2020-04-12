@@ -21,6 +21,8 @@ class MainController extends Controller {
       this.ctx.body="hello !!!"
     }
 
+    /*********************************用户登录*************************************/
+
     /**
      * 用户登录
      */
@@ -60,13 +62,7 @@ class MainController extends Controller {
       }
     }
 
-    /**
-     * 获取文章类型信息
-     */
-    async getTypeInfo() {
-      const result = await this.app.mysql.select('type')
-      this.ctx.body = { data: result }
-    }
+    /*********************************文章管理*************************************/
 
     /**
      * 添加文章
@@ -85,7 +81,21 @@ class MainController extends Controller {
     }
 
     /**
+     * 删除文章信息
+     * @param {文章id} id
+     */
+    async deleteArticle() {
+      const { id } = this.ctx.params;
+      const result = await this.app.mysql.delete('article', { id })
+      
+      this.ctx.body={
+        data: result
+      }
+    }
+
+    /**
      * 修改文章
+     * @param {文章id} id
      */
     async updateArticle() {
       const tempArticle = this.ctx.request.body
@@ -121,19 +131,8 @@ class MainController extends Controller {
     }
 
     /**
-     * 删除文章信息
-     */
-    async deleteArticle() {
-      const { id } = this.ctx.params;
-      const result = await this.app.mysql.delete('article', { id })
-      
-      this.ctx.body={
-        data: result
-      }
-    }
-
-    /**
      * 根据文章id获取文章信息
+     * @param {文章id} id
      */
     async getArticleById() {
       const { id } = this.ctx.params
@@ -157,6 +156,54 @@ class MainController extends Controller {
         data: result
       }
     }
+
+    /**
+     * 根据文章类型id获取文章信息
+     * @param {文章类型id} id 
+     */
+    async getArticleByTypeId() {
+      const { id } = this.ctx.params
+      const sql = 'SELECT article.id as id, '+
+                  'article.title as title, '+
+                  'article.article_content as article_content, '+
+                  'article.introduce as introduce, '+
+                  'article.createAt as createAt, '+
+                  'article.view_count as view_count, '+
+                  'type.typeName as typeName, '+
+                  'type.id as typeId '+
+                  'FROM article LEFT JOIN type ON article.type_id = type.Id '+
+                  'WHERE type.id= '+id
+      const result = await this.app.mysql.query(sql);
+      this.ctx.body = {
+        data: result
+      }
+    }
+
+    /*********************************文章类型管理*************************************/
+
+    /**
+     * 添加文章类别
+     */
+    async addTypeInfo() {
+
+    }
+
+    /**
+     * 删除文章类别
+     */
+    async deleteTypeInfo() {
+
+    }
+    
+    /**
+     * 获取文章类型信息
+     */
+    async getTypeInfo() {
+      const result = await this.app.mysql.select('type')
+      this.ctx.body = { data: result }
+    }
+
+    /*********************************留言管理*************************************/
 
     /**
      * 获取留言信息
@@ -189,6 +236,8 @@ class MainController extends Controller {
       }
     }
 
+    /*********************************个人信息管理*************************************/
+
     /**
      * 查询个人信息
      */
@@ -215,28 +264,7 @@ class MainController extends Controller {
     }
 
     /**
-     * 根据文章类型id获取文章信息
-     */
-    async getArticleByTypeId() {
-      const { id } = this.ctx.params
-      const sql = 'SELECT article.id as id, '+
-                  'article.title as title, '+
-                  'article.article_content as article_content, '+
-                  'article.introduce as introduce, '+
-                  'article.createAt as createAt, '+
-                  'article.view_count as view_count, '+
-                  'type.typeName as typeName, '+
-                  'type.id as typeId '+
-                  'FROM article LEFT JOIN type ON article.type_id = type.Id '+
-                  'WHERE type.id= '+id
-      const result = await this.app.mysql.query(sql);
-      this.ctx.body = {
-        data: result
-      }
-    }
-
-    /**
-     * 上传文件
+     * 上传头像图片
      */
     async upload() {
       const ctx = this.ctx;

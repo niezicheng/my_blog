@@ -17,6 +17,7 @@ import 'highlight.js/styles/monokai-sublime.css'
 
 import Header from '../components/Header'
 import Author from '../components/Author'
+import ViewRank from '../components/ViewRank'
 import Advert from '../components/Advert'
 import Footer from '../components/Footer'
 
@@ -79,6 +80,7 @@ const Home = (list) => {
         <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
           <Author />
           <Advert />
+          <ViewRank />
         </Col>
       </Row>
       <Footer />

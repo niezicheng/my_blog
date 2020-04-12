@@ -7,11 +7,13 @@ class HomeController extends Controller {
     this.ctx.body = 'api Hi';
   }
 
+  /*********************文章信息*************************/
+
   /**
    * 获取文章列表信息
    */
   async getArticleList() {
-    let sql = 'SELECT article.id as id, '+
+    const sql = 'SELECT article.id as id, '+
               'article.title as title, '+
               'article.introduce as introduce, '+
               // 'FROM_UNIXTIME(article.createAt,"%Y-%m-%d %H:%i:%s" ) as createAt,'+
@@ -27,8 +29,8 @@ class HomeController extends Controller {
   }
 
   /**
-    * 通过文章id获取文章详情信息
-    */
+   * 通过文章id获取文章详情信息
+   */
   async getArticleById() {
     const { id } = this.ctx.params
 
@@ -52,23 +54,12 @@ class HomeController extends Controller {
   }
 
   /**
-   * 获取文章类型信息
-   */
-  async getTypeInfo() {
-    const result = await this.app.mysql.select('type')
-
-    this.ctx.body = {
-      data: result
-    }
-  }
-
-  /**
    * 根据类别id获取文章列表
    */
   async getListById() {
     const { id } = this.ctx.params
 
-    let sql = 'SELECT article.id as id, '+
+    const sql = 'SELECT article.id as id, '+
               'article.title as title, '+
               'article.introduce as introduce, '+
               // 'FROM_UNIXTIME(article.createAt,"%Y-%m-%d %H:%i:%s" ) as createAt,'+
@@ -85,6 +76,34 @@ class HomeController extends Controller {
   }
 
   /**
+   * 根据浏览量降序获取前面8条文章信息
+   */
+  async getArticleByViewCount() {
+    const sql = 'SELECT * From article ORDER BY view_count DESC LIMIT 8';
+
+    const result = await this.app.mysql.query(sql);
+
+    this.ctx.body = {
+      data: result
+    };
+  }
+
+  /*********************文章类别信息*************************/
+
+  /**
+   * 获取文章类型信息
+   */
+  async getTypeInfo() {
+    const result = await this.app.mysql.select('type')
+
+    this.ctx.body = {
+      data: result
+    }
+  }
+
+  /*********************留言信息*************************/
+
+  /**
    * 添加留言信息
    */
   async addArticleComment() {
@@ -97,6 +116,8 @@ class HomeController extends Controller {
         isSuccess
       }
   }
+
+  /*********************用户信息*************************/
 
   /**
    * 获取用户信息
