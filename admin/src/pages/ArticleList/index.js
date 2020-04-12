@@ -18,7 +18,7 @@ const { Option } = Select;
 const ArticleList = (props) => {
   const [list, setList] = useState([]); // 文章内容列表
   const [articleTypeList, setArticleTypeList] = useState([]); // 文章类型
-  const [selectType, setSelectType] = useState('请选择文章类型'); // 文章类型
+  const [selectType, setSelectType] = useState(''); // 文章类型
 
   useEffect(() => {
     getList();
@@ -79,6 +79,7 @@ const ArticleList = (props) => {
         setList(data);
       })
     } else {
+      setSelectType('请选择文章类型');
       getList();
     }    
   }
@@ -86,7 +87,7 @@ const ArticleList = (props) => {
   return (
     <>
       <div className="artical-heard">
-        <Select allowClear defaultValue={selectType} style={{ width: '150px' }} size="middle" onChange={handleSelect}>
+        <Select allowClear placeholder='请选择文章类型' style={{ width: '150px' }} size="middle" onChange={handleSelect}>
           {articleTypeList.map(item => (
             <Option key={item.Id} value={item.Id}>
               {item.typeName}
