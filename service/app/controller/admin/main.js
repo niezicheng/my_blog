@@ -210,6 +210,8 @@ class MainController extends Controller {
      */
     async getCommentsInfo() {
       const sql = 'SELECT comment.id as id, '+
+                  'comment.nickName as nickName, '+
+                  'comment.contact as contact, '+
                   'comment.commentContent as commentContent, '+
                   'comment.createAt as createAt, '+
                   'article.title as title '+

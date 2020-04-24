@@ -3,7 +3,7 @@ module.exports = app => {
   router.get('/blog/index', controller.blog.home.index); // test
 
   /*********************文章信息*************************/
-  router.get('/blog/getArticleList', controller.blog.home.getArticleList); // 获取文章信息列表
+  router.post('/blog/getArticleList', controller.blog.home.getArticleList); // 获取文章信息列表
   router.get('/blog/getArticleById/:id', controller.blog.home.getArticleById); // 通过文章id获取文章详情信息
   router.get('/blog/getArticleByViewCount', controller.blog.home.getArticleByViewCount); // 通过文章id获取文章详情信息
   

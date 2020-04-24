@@ -1,3 +1,7 @@
-.list-div {
-  width: 100%;
+.comment-person {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.nick-name {
+  margin-right: 40px;
 }

@@ -7,6 +7,7 @@ import {
   getCommentsInfo,
   deleteComment
 } from './service';
+import './index.css';
 
 const { Panel } = Collapse;
 const { confirm } = Modal;
@@ -22,6 +23,7 @@ const MyCollapse = () => {
   const getCommentList = () => {
     getCommentsInfo().then(res => {
       const { data } = res.data;
+      console.log(data);
       setComments(data);
     })
   }
@@ -66,7 +68,13 @@ const MyCollapse = () => {
       {comments && comments.map(item => {
         return (
           <Panel header={header(item)} key={item.id}>
-            <p>{item.commentContent}</p>
+            <div className="comment-person">
+              <span className="nick-name">留言人昵称：{item.nickName}</span>
+              <span>留言人联系方式：{item.contact}</span>
+            </div>
+            <div>
+              留言内容：{item.commentContent}
+            </div>
           </Panel>
         )
       })}

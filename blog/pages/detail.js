@@ -65,7 +65,7 @@ const Detail = (props) => {
         <Header />
       </Affix>
       <Row className="comm-main" type="flex" justify="center">
-        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
+        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={13}>
           <div>
             <div className="bread-div">
               <Breadcrumb>
@@ -90,7 +90,7 @@ const Detail = (props) => {
             </div>
           </div>
         </Col>
-        <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
+        <Col className="comm-right" xs={0} sm={0} md={7} lg={6} xl={5}>
           <Author />
           <Advert />
           <Affix offsetTop={60}>
@@ -102,10 +102,10 @@ const Detail = (props) => {
         </Col>
       </Row>
       <Row className="comm-main" type="flex" justify="center">
-        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
+        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={13}>
           <MyComment articleId={props.id} />
         </Col>
-        <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}></Col>
+        <Col className="comm-right" xs={0} sm={0} md={7} lg={6} xl={5}></Col>
       </Row>
       <Footer />
     </div>

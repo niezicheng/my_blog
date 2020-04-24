@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Row, Col, List, Affix, BackTop } from 'antd'
+import { Row, Col, List, Affix, BackTop, Pagination } from 'antd'
 import {
   CalendarOutlined,
   FolderOutlined,
@@ -43,6 +43,19 @@ const Home = (list) => {
     }
   })
 
+  // 分页查询页面改变事件
+  const pageHandleChange = async (pageNo, pageSize) => {
+    const res = await axios({
+      url: servicePath.getArticleList,
+      method: 'post',
+      data: {
+        pageNo,
+        pageSize
+      }
+    })
+    setMylist(res.data.data);
+  }
+
   return (
     <div>
       <BackTop />
@@ -53,7 +66,7 @@ const Home = (list) => {
         <Header />
       </Affix>
       <Row className="comm-main" type="flex" justify="center">
-        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
+        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={13}>
           <List 
             header={<div className="list-header">最新日志</div>}
             itemLayout="vertical"
@@ -76,8 +89,15 @@ const Home = (list) => {
               </List.Item>
             )}
           />
+          <Pagination
+            defaultCurrent={1}
+            total={list.total}
+            onChange={pageHandleChange}
+            hideOnSinglePage
+            style={{ float: 'right', marginRight: '50px' }}
+          />
         </Col>
-        <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
+        <Col className="comm-right" xs={0} sm={0} md={7} lg={6} xl={5}>
           <Author />
           <Advert />
           <ViewRank />
@@ -88,10 +108,19 @@ const Home = (list) => {
   )
 }
 
-Home.getInitialProps = async() => {
+Home.getInitialProps = async(context) => {
+  console.log(context, 'hh');
   const promise = new Promise((resolve, reject) => {
-    axios(servicePath.getArticleList)
+    axios({
+      url: servicePath.getArticleList,
+      method: 'post',
+      data: {
+        pageNo: 1,
+        pageSize: 10
+      }
+    })
     .then((res) => {
+      console.log(res.data, 'kkkk');
       resolve(res.data)
     })
   })

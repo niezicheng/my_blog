@@ -141,7 +141,7 @@ const AdminIndex = (props) => {
             </div>
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>Personal Bolg System ©ECJTU 2020 Created by Nie Zicheng</Footer>
       </Layout>
     </Layout>
   );

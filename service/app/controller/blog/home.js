@@ -13,6 +13,10 @@ class HomeController extends Controller {
    * 获取文章列表信息
    */
   async getArticleList() {
+    const { pageNo, pageSize } = this.ctx.request.body
+    const startRows = (pageNo-1)*pageSize
+    const endRows = pageSize
+
     const sql = 'SELECT article.id as id, '+
               'article.title as title, '+
               'article.introduce as introduce, '+
@@ -20,12 +24,16 @@ class HomeController extends Controller {
               'article.createAt as createAt, '+
               'article.view_count as view_count, '+
               'type.typeName as typeName '+
-              'FROM article LEFT JOIN type ON article.type_id = type.Id'
-
-     const result = await this.app.mysql.query(sql)
-     this.ctx.body={
-         data:result
-     }
+              'FROM article LEFT JOIN type ON article.type_id = type.Id '+
+              'ORDER BY article.id DESC '+
+              'LIMIT '+startRows+', '+endRows
+    const sql2 = 'SELECT count(*) as total FROM article'
+    const totalNum = await this.app.mysql.query(sql2)
+    const result = await this.app.mysql.query(sql)
+    this.ctx.body={
+        total: totalNum[0].total,
+        data: result
+    }
   }
 
   /**
@@ -79,7 +87,7 @@ class HomeController extends Controller {
    * 根据浏览量降序获取前面8条文章信息
    */
   async getArticleByViewCount() {
-    const sql = 'SELECT * From article ORDER BY view_count DESC LIMIT 8';
+    const sql = 'SELECT * From article ORDER BY view_count DESC LIMIT 15';
 
     const result = await this.app.mysql.query(sql);
 
