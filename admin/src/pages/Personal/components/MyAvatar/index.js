@@ -4,13 +4,6 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 import './index.css';
 
-// 获取图片base64格式
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
 // 显示图片上传类型及大小
 function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -24,10 +17,10 @@ function beforeUpload(file) {
   return isJpgOrPng && isLt2M;
 }
 
-const Avatar = () => {
+const Avatar = (props) => {
+  const { imgUrl, updateUserMessage } = props;
   const [loading, setLoading] = useState(false); // 上传时加载
-  const [imageUrl, setImageUrl] = useState(''); //  图片路径
-
+  const [imageUrl, setImageUrl] = useState(imgUrl); //  图片路径
 
   const handleChange = info => {
     if (info.file.status === 'uploading') {
@@ -35,14 +28,10 @@ const Avatar = () => {
       return;
     }
     if (info.file.status === 'done') {
-      console.log(info.file);
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => {
-        // console.log(imageUrl);
-        setLoading(false);
-        setImageUrl(imageUrl);
-      });
-      
+      setLoading(false);
+      // 更新数据库中个人头像信息
+      updateUserMessage({ avatar: info.file.response.imgUrl, Id: 1 });
+      setImageUrl(info.file.response.imgUrl);
     }
   };
 

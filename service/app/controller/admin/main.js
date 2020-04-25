@@ -280,9 +280,7 @@ class MainController extends Controller {
           .toLocaleLowerCase();
       //文件生成绝对路径
       //当然这里这样是不行的，因为你还要判断一下是否存在文件路径
-      console.log(this.config.baseDir, '.popo');
       const target = path.join(this.config.baseDir, 'app/public/uploads', filename);
-      console.log(target, 'oioioi');
       //生成一个文件写入 文件流
       const writeStream = fs.createWriteStream(target);
       try {
@@ -295,7 +293,7 @@ class MainController extends Controller {
       }
       //文件响应
       ctx.body = {
-          url: '/public/uploads/' + filename
+          imgUrl: 'http://127.0.0.1:7001/public/uploads/' + filename
       };
     }
 }

@@ -23,8 +23,6 @@ import Footer from '../components/Footer'
 
 import servicePath from '../config'
 
-import '../static/style/pages/detail.css'
-
 const Detail = (props) => {
   const tocify = new Tocify() // 文章详情导航栏插件
   const renderer = new marked.Renderer()
