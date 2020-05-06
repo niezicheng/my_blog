@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Row, Col, List, Affix, Breadcrumb, BackTop } from 'antd'
+import { Row, Col, List, Affix, Breadcrumb, BackTop, Pagination } from 'antd'
 import {
   CalendarOutlined,
   FolderOutlined,
@@ -26,13 +26,13 @@ import Footer from '../components/Footer'
 import '../static/style/pages/list.css'
 
 const MyList = (list) => {
-  const [ mylist , setMylist ] = useState(list.data)
+  const [ mylist , setMylist ] = useState(list.data.data)
   const renderer = new marked.Renderer()
-
+  
   // 重新渲染页面
   useEffect(() => {
-    setMylist(list.data)
-  })
+    setMylist(list.data.data)
+  }, [list.id])
 
   marked.setOptions({
     renderer: renderer, // 可以通过自定义的Renderer渲染出自定义的格式
@@ -47,6 +47,20 @@ const MyList = (list) => {
             return highlightjs.highlightAuto(code).value;
     }
   })
+
+  // 分页查询页面改变事件
+  const pageHandleChange = async (pageNo, pageSize) => {
+    const res = await axios({
+      url: servicePath.getListById,
+      method: 'post',
+      data: {
+        id: list.id,
+        pageNo,
+        pageSize,
+      }
+    })
+    setMylist(res.data.data);
+  }
 
   return (
     <div>
@@ -87,6 +101,13 @@ const MyList = (list) => {
               </List.Item>
             )}
           />
+          <Pagination
+            defaultCurrent={1}
+            pageSize={5}
+            total={list.data.total}
+            onChange={pageHandleChange}
+            style={{ float: 'right', marginRight: '50px' }}
+          />
         </Col>
         <Col className="comm-right" xs={0} sm={0} md={7} lg={6} xl={5}>
           <Author />
@@ -103,13 +124,24 @@ MyList.getInitialProps = async(context) => {
   const { id } = context.query // 获取上层页面跳转传递的id
 
   const promise = new Promise((resolve) => {
-    axios(servicePath.getListById+id)
+    axios({
+      url: servicePath.getListById,
+      method: 'post',
+      data: {
+        id,
+        pageNo: 1,
+        pageSize: 5
+      }
+    })
     .then((res) => {
       resolve(res.data)
     })
   })
 
-  return await promise
+  return {
+    id,
+    data: await promise
+  }
 }
 
 export default MyList

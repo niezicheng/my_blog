@@ -231,6 +231,7 @@ const AddArticle = (props) => {
             </Col>
             <Col span={24}>
               <TextArea
+                className="introduce-markdown"
                 rows={4}
                 placeholder="文章简介"
                 value={introduce}

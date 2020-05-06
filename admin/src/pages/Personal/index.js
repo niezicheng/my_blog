@@ -93,7 +93,7 @@ const Personal = () => {
       <Row className="row-warpper" type="flex" justify="center" align="middle">
         <Col span={4}>
           { userInfo.avatar && (
-            <MyAvatar imgUrl={userInfo.avatar} updateUserMessage={updateUserMessage}/>
+            <MyAvatar imgUrl={userInfo.avatar} updateUserMessage={updateUserMessage} userInfo={userInfo}/>
           )}
         </Col>
         <Divider className="divider-css" type="vertical" />

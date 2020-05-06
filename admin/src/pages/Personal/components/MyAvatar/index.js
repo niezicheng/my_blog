@@ -18,7 +18,7 @@ function beforeUpload(file) {
 }
 
 const Avatar = (props) => {
-  const { imgUrl, updateUserMessage } = props;
+  const { imgUrl, updateUserMessage, userInfo } = props;
   const [loading, setLoading] = useState(false); // 上传时加载
   const [imageUrl, setImageUrl] = useState(imgUrl); //  图片路径
 
@@ -30,7 +30,7 @@ const Avatar = (props) => {
     if (info.file.status === 'done') {
       setLoading(false);
       // 更新数据库中个人头像信息
-      updateUserMessage({ avatar: info.file.response.imgUrl, Id: 1 });
+      updateUserMessage({ ...userInfo, avatar: info.file.response.imgUrl, Id: 1 });
       setImageUrl(info.file.response.imgUrl);
     }
   };

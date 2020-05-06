@@ -9,7 +9,7 @@ module.exports = app => {
   
   /*********************文章类别信息*************************/
   router.get('/blog/getTypeInfo', controller.blog.home.getTypeInfo); // 获取文章类别信息
-  router.get('/blog/getListById/:id', controller.blog.home.getListById); // 通过类型id获取文章信息
+  router.post('/blog/getListById', controller.blog.home.getListById); // 通过类型id获取文章信息
 
   /*********************留言信息*************************/
   router.post('/blog/addArticleComment', controller.blog.home.addArticleComment); // 添加文章留言信息

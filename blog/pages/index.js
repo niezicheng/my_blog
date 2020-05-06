@@ -109,7 +109,6 @@ const Home = (list) => {
 }
 
 Home.getInitialProps = async(context) => {
-  console.log(context, 'hh');
   const promise = new Promise((resolve, reject) => {
     axios({
       url: servicePath.getArticleList,
@@ -120,7 +119,6 @@ Home.getInitialProps = async(context) => {
       }
     })
     .then((res) => {
-      console.log(res.data, 'kkkk');
       resolve(res.data)
     })
   })

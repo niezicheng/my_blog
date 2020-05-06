@@ -65,7 +65,9 @@ class HomeController extends Controller {
    * 根据类别id获取文章列表
    */
   async getListById() {
-    const { id } = this.ctx.params
+    const { id, pageNo, pageSize } = this.ctx.request.body
+    const startRows = (pageNo-1)*pageSize
+    const endRows = pageSize
 
     const sql = 'SELECT article.id as id, '+
               'article.title as title, '+
@@ -73,13 +75,19 @@ class HomeController extends Controller {
               // 'FROM_UNIXTIME(article.createAt,"%Y-%m-%d %H:%i:%s" ) as createAt,'+
               'article.createAt as createAt, '+
               'article.view_count as view_count, '+
+              'type.Id as typeId, '+
               'type.typeName as typeName '+
               'FROM article LEFT JOIN type ON article.type_id = type.Id '+
-              'WHERE type_id='+id
-      
+              'WHERE type_id='+id+
+              ' ORDER BY article.id DESC '+
+              'LIMIT '+startRows+', '+endRows
+
+    const sql2 = 'SELECT count(*) as total FROM article WHERE type_id='+id
+    const totalNum = await this.app.mysql.query(sql2)
     const result = await this.app.mysql.query(sql)
-    this.ctx.body = {
-      data: result
+    this.ctx.body={
+        total: totalNum[0].total,
+        data: result
     }
   }
 
