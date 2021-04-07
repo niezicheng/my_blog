@@ -74,7 +74,7 @@ const MyModal = (props) => {
           <Form.Item
             label="新的昵称"
             name="nickName"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: 'Please input your nickName!' }]}
           >
             <Input />
           </Form.Item>

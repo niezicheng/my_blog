@@ -184,6 +184,7 @@ const AddArticle = (props) => {
                 value={articleTitle}
                 placeholder="文章标题"
                 size="middle"
+                allowClear
                 onChange={e => {setArticleTitle(e.target.value)}}
               />
             </Col>

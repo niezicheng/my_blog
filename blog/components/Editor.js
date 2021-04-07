@@ -51,6 +51,7 @@ const Editor = ({ onChange, onSubmit, submitting, form }) => {
                 !form.isFieldsTouched(true) ||
                 form.getFieldsError().filter(({ errors }) => errors.length).length
               }
+              style={{ marginTop: '5px' }}
             >
               留言
             </Button>
